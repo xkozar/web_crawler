@@ -56,7 +56,6 @@ def deploy_firefox(
         )
         load_profile(
             browser_profile_path,
-            manager_params,
             browser_params,
             browser_params.seed_tar,
         )
@@ -67,7 +66,6 @@ def deploy_firefox(
         )
         load_profile(
             browser_profile_path,
-            manager_params,
             browser_params,
             browser_params.recovery_tar,
         )
@@ -83,7 +81,7 @@ def deploy_firefox(
         fo.add_argument("--height={}".format(DEFAULT_SCREEN_RES[1]))
     if display_mode == "xvfb":
         try:
-            display = Display(visible=0, size=DEFAULT_SCREEN_RES)
+            display = Display(visible=False, size=DEFAULT_SCREEN_RES)
             display.start()
             display_pid, display_port = display.pid, display.display
         except EasyProcessError:
@@ -171,30 +169,14 @@ def deploy_firefox(
 
     # Add extension
     if browser_params.extension_enabled:
-        if browser_params.extension_privacy:
-            # Install our privacy extension
-            ext_loc = os.path.join(root_dir, "../Extension/privacy/uBlock0_1.39.3b2.firefox.signed.xpi")
-            ext_loc = os.path.normpath(ext_loc)
-            driver.install_addon(ext_loc, temporary=True)
-            logger.debug(
-                "BROWSER %i: Privacy extension (uBlock Origin) loaded" % browser_params.browser_id
-            )
-        if browser_params.extension_web_api_manager:
-            # Install our modified Web API Manager extension
-            ext_loc = os.path.join(root_dir, "../Extension/web-api-manager/dist/webapi_manager-0.9.27.zip")
-            ext_loc = os.path.normpath(ext_loc)
-            driver.install_addon(ext_loc, temporary=True)
-            logger.debug(
-                "BROWSER %i: Web Api Manager extension loaded" % browser_params.browser_id
-            )
-        if browser_params.extension_default:
-            # Install extension
-            ext_loc = os.path.join(root_dir, "../Extension/firefox/openwpm.xpi")
-            ext_loc = os.path.normpath(ext_loc)
-            driver.install_addon(ext_loc, temporary=True)
-            logger.debug(
-                "BROWSER %i: OpenWPM Firefox extension loaded" % browser_params.browser_id
-            )
+
+        # Install extension
+        ext_loc = os.path.join(root_dir, "../../Extension/firefox/openwpm.xpi")
+        ext_loc = os.path.normpath(ext_loc)
+        driver.install_addon(ext_loc, temporary=True)
+        logger.debug(
+            "BROWSER %i: OpenWPM Firefox extension loaded" % browser_params.browser_id
+        )
 
     # set window size
     driver.set_window_size(*DEFAULT_SCREEN_RES)
