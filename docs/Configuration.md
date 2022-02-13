@@ -60,11 +60,8 @@ validate_crawl_configs(manager_params, browser_params)
 * `data_directory`
   * The directory into which screenshots and page dumps will be saved
   * [Intended to be removed by #232](https://github.com/mozilla/OpenWPM/issues/232)
-* `log_directory`
-  * The directory in which to output platform logs. The
-    directory given will be created if it does not exist.
-* `log_file` -> supported file extensions are `.log`
-  * The name of the log file to be written to `log_directory`.
+* `log_path` -> supported file extensions are `.log`
+  * The path of the file to be written to.
 * `failure_limit` -> has to be either of type `int` or `None`
   * The number of command failures the platform will tolerate before raising a
     `CommandExecutionError` exception. Otherwise the default is set to 2 x the
