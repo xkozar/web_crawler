@@ -217,7 +217,7 @@ class StorageController:
         self.logger.debug(
             "Awaited all tasks for visit_id %d while finalizing", visit_id
         )
-
+        
         completion_token = await self.structured_storage.finalize_visit_id(
             visit_id, interrupted=not success
         )
@@ -249,6 +249,8 @@ class StorageController:
 
     async def shutdown(self, completion_queue_task: Task[None]) -> None:
         completion_tokens = {}
+        self.logger.debug("AHOJTE")
+        self.logger.debug(completion_queue_task)
         visit_ids = list(self.store_record_tasks.keys())
         for visit_id in visit_ids:
             t = await self.finalize_visit_id(visit_id, success=False)

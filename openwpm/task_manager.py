@@ -380,6 +380,7 @@ class TaskManager:
             visit_id_list = self.storage_controller_handle.get_new_completed_visits()
             if not visit_id_list:
                 time.sleep(1)
+                print("CANNOT STOP :(", visit_id_list)
                 continue
 
             for visit_id, successful in visit_id_list:

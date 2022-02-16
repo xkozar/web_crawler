@@ -11,6 +11,7 @@ from sqlite3 import (
     OperationalError,
     ProgrammingError,
 )
+import traceback
 from typing import Any, Dict, List, Tuple
 
 from openwpm.types import VisitId
@@ -63,6 +64,9 @@ class SQLiteStorageProvider(StructuredStorageProvider):
         try:
             self.cur.execute(statement, args)
             self._sql_counter += 1
+            if self._sql_counter % 1 == 0:
+                self.logger.debug("KOMMITING")
+                self.db.commit()
         except (
             OperationalError,
             ProgrammingError,
@@ -73,6 +77,7 @@ class SQLiteStorageProvider(StructuredStorageProvider):
                 "Unsupported record:\n%s\n%s\n%s\n%s\n"
                 % (type(e), e, statement, repr(args))
             )
+            traceback.print_stack()
 
     @staticmethod
     def _generate_insert(
@@ -106,4 +111,6 @@ class SQLiteStorageProvider(StructuredStorageProvider):
 
     async def shutdown(self) -> None:
         self.db.commit()
+        self.logger.debug("CLOSING DATABASE")
         self.db.close()
+        self.logger.debug("CLOSING DATABASE")

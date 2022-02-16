@@ -19,6 +19,8 @@
 #   along with this program. If not, see <https://www.gnu.org/licenses/>.
 # 
 
+import asyncio
+from asyncore import loop
 from pathlib import Path
 
 from intercept_javascript_command import InterceptJavaScriptCommand
